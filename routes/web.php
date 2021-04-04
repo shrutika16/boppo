@@ -24,7 +24,10 @@ Route::group(
 Route::group(['prefix' => 'admin/', 'middleware' => ['auth']], function () {
 
     Route::get('/dashboard', 'Admin\DashboardController@index')->name('dashboard.show');
-
+    Route::get('/addEvent', 'Admin\EventController@index')->name('event.add');
+    Route::post('/storeEvent', 'Admin\EventController@store')->name('event.store');
+    Route::get('/deleteEvent/{id}', 'Admin\EventController@delete')->name('event.delete');
+    Route::get('/seatsArrange/{no_of_seats}', 'Admin\EventController@seatsArrange');
 });
 
 Route::get('/password/reset', function () {
