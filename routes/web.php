@@ -34,7 +34,5 @@ Route::get('/password/reset', function () {
     return redirect('/');
 });
 
-Route::get('/', function () {
-    return redirect('/admin/login');
-});
-
+Route::get('/', 'HomeController@index');
+Route::get('/event/{slug}', 'EventController@detail');
