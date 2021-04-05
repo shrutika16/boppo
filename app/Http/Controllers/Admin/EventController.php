@@ -12,7 +12,7 @@ class EventController extends Controller
 {
     public function index(){
 
-        $seatCategories = SeatCategories::get();
+        $seatCategories = SeatCategories::orderBy('price_order', 'ASC')->get();
         return view('admin.addEvent', compact('seatCategories'));
     }
 

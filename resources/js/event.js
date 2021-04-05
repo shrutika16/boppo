@@ -44,6 +44,7 @@
         });
 
     });
+
     $(document).ready(function() {
         $(function(){
 			$('*[name=event_date]').appendDtpicker();

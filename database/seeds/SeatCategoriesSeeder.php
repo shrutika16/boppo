@@ -18,7 +18,9 @@ class SeatCategoriesSeeder extends Seeder
                 'name' => 'silver',
                 'reserved_percentage' => '25',
                 'category_rank' => 3,
-                'master_category' => 0,
+                'price_order' => 3,
+                'price_percentage' => '80',
+                'percentage_of_category_id' => 2,
                 'created_at'  => date('Y-m-d h:i:s'),
                 'updated_at'  => date('Y-m-d h:i:s')
             ],
@@ -26,7 +28,9 @@ class SeatCategoriesSeeder extends Seeder
                 'name' => 'gold',
                 'reserved_percentage' => '40',
                 'category_rank' => 2,
-                'master_category' => 0,
+                'price_order' => 2,
+                'price_percentage' => '70',
+                'percentage_of_category_id' => 3,
                 'created_at'  => date('Y-m-d h:i:s'),
                 'updated_at'  => date('Y-m-d h:i:s')
             ],
@@ -34,10 +38,10 @@ class SeatCategoriesSeeder extends Seeder
                 'name' => 'platinum',
                 'reserved_percentage' => '35',
                 'category_rank' => 1,
-                'master_category' => 1,
+                'price_order' => 1,
                 'created_at'  => date('Y-m-d h:i:s'),
                 'updated_at'  => date('Y-m-d h:i:s')
-            ],
+            ]
         ]
         );
     }

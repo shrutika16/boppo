@@ -18,7 +18,9 @@ class CreateSeatsCategoriesTable extends Migration
             $table->string('name', 200);
             $table->integer('reserved_percentage')->default(0);
             $table->integer('category_rank')->default(0);
-            $table->integer('master_category')->default(0);
+            $table->integer('price_order')->nullable();
+            $table->integer('price_percentage')->nullable();
+            $table->integer('percentage_of_category_id')->nullable();
             $table->timestamps();
         });
     }

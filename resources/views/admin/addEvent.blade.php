@@ -64,7 +64,16 @@
                                                     <input type="hidden" name="seatno[{{ $seatCategory->id }}]" id="seatno_{{ $seatCategory->id }}" value="25">
                                                 </td>
                                                 <td id='category_price'>
-                                                    <input type="text" name="single_price[{{ $seatCategory->id }}]" id="single_price_{{ $seatCategory->id }}" class="single_price" placeholder="Single Seat Price"  data-catid='{{ $seatCategory->id }}'>
+                                                    <input
+                                                        type="text"
+                                                        name="single_price[{{ $seatCategory->id }}]"
+                                                        id="single_price_{{ $seatCategory->id }}"
+                                                        class="single_price {{ (($key == 0) ? 'master_category': '' ) }}"
+                                                        placeholder="Single Seat Price"
+                                                        data-catid='{{ $seatCategory->id }}'
+                                                        data-pricepercentage='{{ $seatCategory->price_percentage }}'
+                                                        data-percentecate='{{ $seatCategory->percentage_of_category_id }}'
+                                                    >
                                                 </td>
                                                 <td>
                                                     <span id="price_{{ $seatCategory->id }}">0</span>
@@ -90,3 +99,27 @@
         </div>
     </div>
 @endsection
+@push('footer-scripts')
+<script>
+    $(document).ready(function() {
+        $(".master_category").blur(function () {
+            var master_category = $('.master_category').val();
+            console.log('master' + master_category);
+            $(".single_price").each(function (index) {
+
+                var category_id = $(this).attr("data-catid");
+
+                var category_price = $('#single_price_' + category_id).val();
+
+                var pricepercentage = $(this).attr("data-pricepercentage");
+                var percentecate = $(this).attr("data-percentecate");
+                console.log('category' + category_id);
+                if (pricepercentage != '') {
+
+                }
+            });
+        });
+    });
+
+</script>
+@endpush
