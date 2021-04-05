@@ -1,52 +1,62 @@
 
-    $(document).ready(function() {
-        $("#no_of_seats").keyup(function(){
-           var no_of_seats = $("#no_of_seats").val();
-           $.ajax({
-                type:'GET',
-                url: "/admin/seatsArrange/" + no_of_seats,
-                success: function(data){
+$(function() {
 
-                    $.each( data, function( i, val ) {
-
-                        $( "#seat_no_" + i ).html(val);
-                        $( "#seatno_" + i ).val(val);
-                    });
-                }
-           });
+    function calculate_seats() {
+        var no_of_seats = $("#no_of_seats").val();
+        $.ajax({
+            type:'GET',
+            url: "/admin/seatsArrange/" + no_of_seats,
+            success: function(data){
+                $.each( data, function( i, val ) {
+                    $( "#seat_no_" + i ).html(val.seats_range);
+                    $( "#seatno_" + i ).val(val.seats_range);
+                    $( "#total_seats_" + i ).val(val.total_seats);
+                });
+            }
         });
-        var i = 0;
-        var no_of_seats= 0;
-        var total_price = 0;
-        $( "#category_price" ).each(function( index ) {
+    }
+    $("body").on('blur', '#no_of_seats', function(){
+        calculate_seats();
+    });
 
-            $(".single_price").on('blur', function(){
-                var category_id = $(this).data("catid");
-                var single_price = $('#single_price_' + category_id).val();
+    $('*[name=event_date]').appendDtpicker();
 
-                var seat_range = $( "#seatno_" + category_id ).val().trim();
+    function calculateTotalPrice() {
+        let total_price = 0;
+        $('.single_price').each(function () {
+            let category_id = $(this).data('catid');
+            let category_price = $(this).val();
+            let category_total_seats = $('#total_seats_' + category_id).val();
 
-                var result = seat_range.split('-');
+            if(category_total_seats != '') {
+                let total_cat_price = category_total_seats * category_price;
+                total_price += total_cat_price;
+                $('#category_price_' + category_id).val(total_cat_price);
+                $('#price_' + category_id).text('₹' + total_cat_price);
+            }
+        });
+        $('#total_price').text('₹' + total_price);
+    }
 
-                var no_of_seats = result[1] - i;
-                var price = single_price * no_of_seats;
-                total_price += parseInt(price);
+    $(".master_category").blur(function () {
+        let master_category = $('.master_category').val();
+        let last_category_price = master_category;
 
-                $( "#price_" + category_id ).html(price);
-                $( "#category_price_" + category_id ).val(price);
-                $( "#total_price").html(total_price);
-                $( "#total_amount").val(total_price);
+        calculate_seats();
 
-                i = result[1];
+        setTimeout(function () {
+            $(".calculate_price").each(function (index) {
+                let pricepercentage = $(this).attr("data-pricepercentage");
+                let category_id = $(this).data('catid');
+                let current_category_price = ((last_category_price / 100) * pricepercentage).toFixed(0);
+                
+                $(this).val(current_category_price);
+    
+                last_category_price = current_category_price;                
             });
 
-
-        });
+            calculateTotalPrice();
+        }, 500);
 
     });
-
-    $(document).ready(function() {
-        $(function(){
-			$('*[name=event_date]').appendDtpicker();
-		});
-    });
+});

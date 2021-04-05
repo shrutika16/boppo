@@ -26,6 +26,7 @@ class DashboardController extends Controller
     public function index()
     {
         $events = Events::get();
+        
         return view('admin.dashboard',compact('events'));
     }
 }

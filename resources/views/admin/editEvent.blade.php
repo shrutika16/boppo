@@ -58,35 +58,37 @@
                                         @php
                                             $total_price= 0;
                                         @endphp
-                                        @foreach ($events->seats as $key => $seat)
+                                        @foreach ($seatCategories as $key => $seat)
                                         @php
                                             $total_price += $seat->total_price;
                                         @endphp
                                             <tr>
                                                 <td>#{{ $key + 1 }}</td>
-                                                <td>{{ $seat->category->name }}</td>
+                                                <td>{{ $seat->name }}</td>
                                                 <td>
-                                                    <span id="seat_no_{{ $seat->category->id }}"> {{ $seat->seat_no_from }} - {{ $seat->seat_no_to }} </span>
-                                                    <input type="hidden" name="seatno[{{ $seat->category->id }}]" id="seatno_{{ $seat->category->id }}" value="{{ $seat->seat_no_from }} - {{ $seat->seat_no_to }}">
+                                                    <span id="seat_no_{{ $seat->seat_category_id }}"> {{ $seat->seat_no_from }}-{{ $seat->seat_no_to }} </span>
+                                                    <input type="hidden" name="seatno[{{ $seat->seat_category_id }}]" id="seatno_{{ $seat->seat_category_id }}" value="{{ $seat->seat_no_from }}-{{ $seat->seat_no_to }}">
+                                                    <input type="hidden" name="total_seats[{{ $seat->seat_category_id }}]" id="total_seats_{{ $seat->seat_category_id }}">
                                                 </td>
                                                 <td id='category_price'>
                                                     <input
                                                         type="text"
-                                                        name="single_price[{{ $seat->category->id }}]"
-                                                        id="single_price_{{ $seat->category->id }}"
-                                                        class="single_price"
+                                                        name="single_price[{{ $seat->seat_category_id }}]"
+                                                        id="single_price_{{ $seat->seat_category_id }}"
+                                                        class="single_price {{ (($key == 0) ? 'master_category': 'calculate_price' ) }}"
                                                         placeholder="Single Seat Price"
-                                                        data-catid='{{ $seat->category->id }}'
+                                                        data-catid='{{ $seat->seat_category_id }}'
+                                                        data-pricepercentage='{{ $seat->price_percentage }}'
                                                         value="{{ $seat->seat_price }}"
                                                     >
                                                 </td>
                                                 <td>
-                                                    <span id="price_{{ $seat->category->id }}">{{ $seat->total_price }}</span>
+                                                    <span id="price_{{ $seat->seat_category_id }}">₹{{ $seat->total_price }}</span>
                                                     <input
                                                         type="hidden"
                                                         value="{{ $seat->total_price }}"
-                                                        name="category_price[{{ $seat->category->id }}]"
-                                                        id="category_price_{{ $seat->category->id }}"
+                                                        name="category_price[{{ $seat->seat_category_id }}]"
+                                                        id="category_price_{{ $seat->seat_category_id }}"
                                                     >
                                                 </td>
                                             </tr>
@@ -94,8 +96,7 @@
                                         <tr>
                                             <td  class="text-right" colspan="4"> Total Amount </td>
                                             <td>
-                                                <input type="hidden" value="{{ $total_price }}" name="total_amount" id="total_amount">
-                                                <span id="total_price">{{ $total_price }}</span>
+                                                <span id="total_price">₹{{ $total_price }}</span>
                                             </td>
                                         </tr>
                                     </tbody>

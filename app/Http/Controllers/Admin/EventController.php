@@ -20,8 +20,7 @@ class EventController extends Controller
         return getseatsArrange($no_of_seats);
     }
 
-    public function store(Request $request){
-
+    public function store(Request $request) {
         // validation
         $request->validate([
             'eventName' => 'required',
@@ -62,8 +61,16 @@ class EventController extends Controller
 
     public function edit($id){
         $events = Events::with('seats')->where('id', $id)->first();
-        // dd($events->toArray());
-        $seatCategories = SeatCategories::get();
+
+        // $seatCategories = SeatCategories::orderBy('price_order', 'ASC')->get();
+        $seatCategories = DB::table('event_seats as es')
+                            ->select('es.*','sc.price_percentage', 'sc.name')
+                            ->join('seats_categories as sc','sc.id','=','es.seat_category_id')
+                            ->where('es.event_id', $id)
+                            ->orderBy('sc.price_order','ASC')
+                            ->get();
+        // dd($seatCategories);
+
         return view('admin.editEvent', compact('events', 'seatCategories'));
     }
 

@@ -58,34 +58,33 @@
                                         @foreach ($seatCategories as $key => $seatCategory)
                                             <tr>
                                                 <td>#{{ $key + 1 }}</td>
-                                                <td>{{ $seatCategory->name }}</td>
+                                                <td>{{ ucfirst($seatCategory->name) }}</td>
                                                 <td>
                                                     <span id="seat_no_{{ $seatCategory->id }}"> NA - NA </span>
-                                                    <input type="hidden" name="seatno[{{ $seatCategory->id }}]" id="seatno_{{ $seatCategory->id }}" value="25">
+                                                    <input type="hidden" name="seatno[{{ $seatCategory->id }}]" id="seatno_{{ $seatCategory->id }}" value="0">
+                                                    <input type="hidden" name="total_seats[{{ $seatCategory->id }}]" id="total_seats_{{ $seatCategory->id }}">
                                                 </td>
                                                 <td id='category_price'>
                                                     <input
                                                         type="text"
                                                         name="single_price[{{ $seatCategory->id }}]"
                                                         id="single_price_{{ $seatCategory->id }}"
-                                                        class="single_price {{ (($key == 0) ? 'master_category': '' ) }}"
+                                                        class="single_price {{ (($key == 0) ? 'master_category': 'calculate_price' ) }}"
                                                         placeholder="Single Seat Price"
                                                         data-catid='{{ $seatCategory->id }}'
                                                         data-pricepercentage='{{ $seatCategory->price_percentage }}'
-                                                        data-percentecate='{{ $seatCategory->percentage_of_category_id }}'
                                                     >
                                                 </td>
                                                 <td>
-                                                    <span id="price_{{ $seatCategory->id }}">0</span>
-                                                    <input type="hidden" value="" name="category_price[{{ $seatCategory->id }}] " id="category_price_{{ $seatCategory->id }}">
+                                                    <span id="price_{{ $seatCategory->id }}">₹0</span>
+                                                    <input type="hidden" value="" name="category_price[{{ $seatCategory->id }}]" id="category_price_{{ $seatCategory->id }}">
                                                 </td>
                                             </tr>
                                         @endforeach
                                         <tr>
                                             <td  class="text-right" colspan="4"> Total Amount </td>
                                             <td>
-                                                <input type="hidden" value="" name="total_amount" id="total_amount">
-                                                <span id="total_price">0</span>
+                                                <span id="total_price">₹0</span>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -102,23 +101,7 @@
 @push('footer-scripts')
 <script>
     $(document).ready(function() {
-        $(".master_category").blur(function () {
-            var master_category = $('.master_category').val();
-            console.log('master' + master_category);
-            $(".single_price").each(function (index) {
-
-                var category_id = $(this).attr("data-catid");
-
-                var category_price = $('#single_price_' + category_id).val();
-
-                var pricepercentage = $(this).attr("data-pricepercentage");
-                var percentecate = $(this).attr("data-percentecate");
-                console.log('category' + category_id);
-                if (pricepercentage != '') {
-
-                }
-            });
-        });
+        
     });
 
 </script>

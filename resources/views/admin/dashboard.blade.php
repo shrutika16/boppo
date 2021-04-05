@@ -30,6 +30,7 @@
                                     <th>Sr. No</th>
                                     <th>Name</th>
                                     <th>No Of Seats</th>
+                                    <th>Total Bookings</th>
                                     <th>Total Revenue</th>
                                     <th>Action</th>
                                     <th>Status</th>
@@ -37,14 +38,23 @@
                             </thead>
                             <tbody>
                                 @foreach ($events as $key => $event)
+                                    @php
+                                    $totalRevenue = $event->bookings->sum(function($value) {
+                                        return $value->total_price;
+                                    });
+                                    $totalBookings = $event->bookings->count(function($value) {
+                                        return $value->total_price;
+                                    });
+                                    @endphp
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $event->name }}</td>
                                         <td>{{ $event->no_of_seats }}</td>
-                                        <td>1000</td>
+                                        <td>{{ $totalBookings }}</td>
+                                        <td>₹{{ $totalRevenue }}</td>
                                         <td>
                                             <a href="{{ route('event.edit',  $event->id) }}" class="btn btn-primary">Edit</a>
-                                            <a href="{{ route('event.delete',  $event->id) }}" class="btn btn-danger">Delete</a>
+                                            <a href="{{ route('event.delete',  $event->id) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
                                         </td>
                                         <td >{{ (($event->status == 1) ? 'Active' : 'In-Active') }}</td>
                                     </tr>
@@ -62,10 +72,6 @@
                 <p>{{$message}}</p>
             </div>
         @endif
-
-        <div class="row">
-
-        </div>
 
     </div>
 

@@ -7,7 +7,7 @@ Admin panel to see the scheduled events & manage add event for the users.
 First clone the respository in your system using following command
 
 ```bash
-git clone https://github.com/shrutika16/boppo-task.git
+git clone https://github.com/shrutika16/boppo.git
 ```
 Run composer install command to install dependency packages
 ```bash
@@ -24,26 +24,24 @@ php artisan key:generate
 
 Now add the seeder for dependency of the seat categories
 ```bash
- php artisan db:seed --class=SeatCategoriesSeeder
- php artisan db:seed --class=AdminUserSeeder
+php artisan db:seed --class=SeatCategoriesSeeder
+php artisan db:seed --class=AdminUserSeeder
 ```
-if not worked directly the seeder class dump all dependency then run seeder command
+If not worked directly the seeder class dump all dependency then run seeder command
 ```bash
- composer dumpautoload
+composer dump-autoload
 ```
 
-install nmp for js and css dependancy using laravel mix webpack
+Install packages throgh npm command and use npm watch to compile asset files.
 ```bash
- npm install
- npm run dev
+npm install
+npm run watch
 ```
 
-Admin creds:
+Admin following credentials to login in admin panel:
+
 ```bash
- Email : shrutika16dumbre@gmail.com
- Password: 12345678
+URL : /admin/login
+Email : demo@boppo.com
+Password: 12345678
 ```
-
-Please make sure you have updated email service credentials inside .env file as forgot password feature sends an email with reset password link.
-
-Please update tests as appropriate.

@@ -52909,43 +52909,58 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-$(document).ready(function () {
-  $("#no_of_seats").keyup(function () {
+$(function () {
+  function calculate_seats() {
     var no_of_seats = $("#no_of_seats").val();
     $.ajax({
       type: 'GET',
       url: "/admin/seatsArrange/" + no_of_seats,
       success: function success(data) {
         $.each(data, function (i, val) {
-          $("#seat_no_" + i).html(val);
-          $("#seatno_" + i).val(val);
+          $("#seat_no_" + i).html(val.seats_range);
+          $("#seatno_" + i).val(val.seats_range);
+          $("#total_seats_" + i).val(val.total_seats);
         });
       }
     });
+  }
+
+  $("body").on('blur', '#no_of_seats', function () {
+    calculate_seats();
   });
-  var i = 0;
-  var no_of_seats = 0;
-  var total_price = 0;
-  $("#category_price").each(function (index) {
-    $(".single_price").on('blur', function () {
-      var category_id = $(this).data("catid");
-      var single_price = $('#single_price_' + category_id).val();
-      var seat_range = $("#seatno_" + category_id).val().trim();
-      var result = seat_range.split('-');
-      var no_of_seats = result[1] - i;
-      var price = single_price * no_of_seats;
-      total_price += parseInt(price);
-      $("#price_" + category_id).html(price);
-      $("#category_price_" + category_id).val(price);
-      $("#total_price").html(total_price);
-      $("#total_amount").val(total_price);
-      i = result[1];
+  $('*[name=event_date]').appendDtpicker();
+
+  function calculateTotalPrice() {
+    var total_price = 0;
+    $('.single_price').each(function () {
+      var category_id = $(this).data('catid');
+      var category_price = $(this).val();
+      var category_total_seats = $('#total_seats_' + category_id).val();
+
+      if (category_total_seats != '') {
+        var total_cat_price = category_total_seats * category_price;
+        total_price += total_cat_price;
+        $('#category_price_' + category_id).val(total_cat_price);
+        $('#price_' + category_id).text('₹' + total_cat_price);
+      }
     });
-  });
-});
-$(document).ready(function () {
-  $(function () {
-    $('*[name=event_date]').appendDtpicker();
+    $('#total_price').text('₹' + total_price);
+  }
+
+  $(".master_category").blur(function () {
+    var master_category = $('.master_category').val();
+    var last_category_price = master_category;
+    calculate_seats();
+    setTimeout(function () {
+      $(".calculate_price").each(function (index) {
+        var pricepercentage = $(this).attr("data-pricepercentage");
+        var category_id = $(this).data('catid');
+        var current_category_price = (last_category_price / 100 * pricepercentage).toFixed(0);
+        $(this).val(current_category_price);
+        last_category_price = current_category_price;
+      });
+      calculateTotalPrice();
+    }, 500);
   });
 });
 
@@ -54778,8 +54793,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\boppo\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\boppo\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/html/boppo-task/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/html/boppo-task/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -5,35 +5,34 @@ use App\SeatCategories;
 if (!function_exists('getseatsArrange')) {
     function getseatsArrange($no_of_seats)
     {
-        $seatCategories = SeatCategories::orderBy('category_rank', 'DESC')->get();
+        $seatCategories = SeatCategories::orderBy('category_rank', 'ASC')->get();
 
-        $seat_start_no = 1;
-        $i = 0;
+        $seat_start_no = $seat_end_no = 1;
+        $pending_seats = $no_of_seats;
 
-        foreach ($seatCategories as $seatCategory) {
-            $reserved_percentage = $seatCategory->reserved_percentage;
+        foreach ($seatCategories as $key => $seatCategory) {
 
-            $calculate_seats = round(($no_of_seats / 100) * $reserved_percentage);
+            $calculate_seats = round((($no_of_seats / 100) * $seatCategory->reserved_percentage), 0);
 
-            //set from seat no
-            $from_seat = $seat_start_no;
-
-            //set to seat no
-            $to_seat = $i + $calculate_seats;
-
-            if ($seatCategory->category_rank == 1) {
-                $from_seat = $seat_start_no;
-                $to_seat = ($no_of_seats - $seat_start_no) + $i;
+            // set from seat no
+            if ((count($seatCategories)- 1) == $key) {
+                $seat_end_no = $no_of_seats;
+                $calculate_seats = $pending_seats;
+            }
+            else {
+                $seat_end_no = ($seat_start_no - 1) + $calculate_seats;
             }
 
-            //set seat start no as last categories to seat
-            $seat_start_no = $to_seat;
-            $i = $to_seat;
-
-            $seatArranged[$seatCategory->id] = $from_seat . ' - ' . $to_seat;
+            $seatArranged[$seatCategory->id] = array(
+                'total_seats' => $calculate_seats,
+                'seats_range' => $seat_start_no . '-' . $seat_end_no
+            );
+            
+            $pending_seats = $pending_seats - $calculate_seats;
+            $seat_start_no = $seat_end_no + 1;
         }
+        
         return $seatArranged;
     }
 }
-
 ?>

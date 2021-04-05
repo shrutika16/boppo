@@ -16,7 +16,6 @@ class CreateBookingsTable extends Migration
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->integer('event_id');
-            $table->integer('user_id');
             $table->integer('no_of_seats');
             $table->integer('total_price');
             $table->timestamps();

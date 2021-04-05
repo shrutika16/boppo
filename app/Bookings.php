@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Bookings extends Model
 {
     protected $table = 'bookings';
+    
     public $timestamps = true;
 
     protected $fillable = [

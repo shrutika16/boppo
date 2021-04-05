@@ -14,4 +14,8 @@ class Events extends Model
     public function seats() {
         return $this->hasMany('App\EventSeats', 'event_id')->orderBy('seat_no_from', 'ASC');
     }
+
+    public function bookings() {
+        return $this->hasMany('App\Bookings', 'event_id');
+    }
 }
