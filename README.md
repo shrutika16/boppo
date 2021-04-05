@@ -25,12 +25,24 @@ php artisan key:generate
 Now add the seeder for dependency of the seat categories
 ```bash
  php artisan db:seed --class=SeatCategoriesSeeder
+ php artisan db:seed --class=AdminUserSeeder
 ```
 if not worked directly the seeder class dump all dependency then run seeder command
 ```bash
  composer dumpautoload
 ```
 
+install nmp for js and css dependancy using laravel mix webpack
+```bash
+ npm install
+ npm run dev
+```
+
+Admin creds:
+```bash
+ Email : shrutika16dumbre@gmail.com
+ Password: 12345678
+```
 
 Please make sure you have updated email service credentials inside .env file as forgot password feature sends an email with reset password link.
 

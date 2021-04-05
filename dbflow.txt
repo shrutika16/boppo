@@ -20,6 +20,10 @@ seat_category
   - id
   - name
   - reserved_percentage
+  - category_rank
+  - price_order
+  - price_percentage
+  - percentage_of_category_id
   - created_at
   - updated_at
 

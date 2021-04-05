@@ -16,7 +16,9 @@ class CreateSeatsCategoriesTable extends Migration
         Schema::create('seats_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name', 200);
-            $table->integer('reserved_percentage');
+            $table->integer('reserved_percentage')->default(0);
+            $table->integer('category_rank')->default(0);
+            $table->integer('master_category')->default(0);
             $table->timestamps();
         });
     }

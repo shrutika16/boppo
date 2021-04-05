@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Events;
+use App\{Events, Bookings, BookingTickets};
 use DB;
 
 class EventController extends Controller
@@ -40,7 +40,7 @@ class EventController extends Controller
             ->join('bookings', 'bookings.id', '=', 'booking_tickets.booking_id')
             ->where('bookings.event_id', '=', $event_id)
             ->pluck('booking_tickets.seat_number')->toArray();
-        
+
         return view('event', compact(
             'event',
             'seats',
@@ -48,7 +48,38 @@ class EventController extends Controller
         ));
     }
 
-    public function generateSeats() {
+    public function generateSeats(Request $request) {
 
+        // dd($request->all());
+        // create bookings
+        $booking = Bookings::create([
+            'event_id' => $request->event_id,
+            'no_of_seats' => count($request->seat),
+            'total_price' => $request->total_price
+        ]);
+
+        //create bookings tickets
+        foreach ($request->seat as $seat) {
+            $seat_params = explode('_', $seat);
+            $seat_no = $seat_params[0];
+            $seat_category_id = $seat_params[1];
+            $seat_single_price = $seat_params[2];
+
+            $booking_tickets = BookingTickets::create([
+                'booking_id' => $booking->id,
+                'seat_category_id' => $seat_category_id,
+                'seat_number' => $seat_no,
+                'seat_price' => $seat_single_price
+            ]);
+        }
+
+        // thankyou page redirect
+        return [
+            'success'=> true
+        ];
+    }
+
+    public function thankyou(){
+        return view('thankyou');
     }
 }

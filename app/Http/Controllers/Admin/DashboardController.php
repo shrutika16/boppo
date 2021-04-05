@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Events;
 
 class DashboardController extends Controller
 {
@@ -24,6 +25,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard');
+        $events = Events::get();
+        return view('admin.dashboard',compact('events'));
     }
 }

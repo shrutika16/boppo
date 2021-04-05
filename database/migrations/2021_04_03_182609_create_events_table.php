@@ -16,7 +16,7 @@ class CreateEventsTable extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->string('name', 200);
-            $table->integer('no_of_nights');
+            $table->integer('no_of_seats');
             $table->dateTime('event_datetime', 0);
             $table->integer('status')->default(1);
             $table->timestamps();
